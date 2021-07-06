@@ -18,10 +18,10 @@
      <ENHMODE>D</ENHMODE>
      <FULL_NAME>\PR:SAPLSHI01\FO:HANDLE_MENU_REQUEST\SE:END\EI</FULL_NAME>
      <SOURCE>
-      <item>call method g_tree_data-&gt;menu-&gt;add_function</item>
-      <item>exporting</item>
-      <item>fcode = &apos;ZZSHOWPATH&apos;</item>
-      <item>text  = &apos;Show activity path&apos;.</item>
+      <item>      call method g_tree_data-&gt;menu-&gt;add_function</item>
+      <item>        exporting</item>
+      <item>          fcode = &apos;ZZSHOWPATH&apos;</item>
+      <item>          text  = &apos;Show activity path&apos;.</item>
      </SOURCE>
     </ENH_HOOK_IMPL>
     <ENH_HOOK_IMPL>
@@ -29,141 +29,97 @@
      <ENHMODE>D</ENHMODE>
      <FULL_NAME>\PR:SAPLSHI01\FO:HANDLE_MENU_SELECT\SE:BEGIN\EI</FULL_NAME>
      <SOURCE>
-      <item>CASE g_fcode.</item>
-      <item>WHEN &apos;ZZSHOWPATH&apos;.</item>
+      <item>    CASE g_fcode.</item>
+      <item>    WHEN &apos;ZZSHOWPATH&apos;.</item>
       <item/>
-      <item>DATA: BEGIN OF zz,</item>
-      <item>lv_nodekey TYPE tv_nodekey ,</item>
-      <item>le_item TYPE shi_item,</item>
-      <item>le_node TYPE treev_node,</item>
-      <item>lv_relatkey TYPE tv_nodekey,</item>
-      <item>lv_relatship_ant TYPE int4,</item>
-      <item>html TYPE string,</item>
-      <item>END OF zz.</item>
+      <item>      DATA: BEGIN OF zz,</item>
+      <item>            lv_nodekey TYPE tv_nodekey ,</item>
+      <item>            le_item TYPE shi_item,</item>
+      <item>            le_node TYPE treev_node,</item>
+      <item>            lv_relatkey TYPE tv_nodekey,</item>
+      <item>            lv_relatship_ant TYPE int4,</item>
+      <item>            html TYPE string,</item>
+      <item>            END OF zz.</item>
       <item/>
-      <item>CHECK g_tree_data-&gt;tree IS NOT INITIAL.</item>
+      <item>      CHECK g_tree_data-&gt;tree IS NOT INITIAL.</item>
       <item/>
-      <item>READ TABLE g_tree_data-&gt;nodes INTO zz-le_node WITH KEY node_key = g_tree_data-&gt;node_key  .</item>
-      <item>CHECK sy-subrc = 0.</item>
+      <item>      READ TABLE g_tree_data-&gt;nodes INTO zz-le_node WITH KEY node_key = g_tree_data-&gt;node_key  .</item>
+      <item>      CHECK sy-subrc = 0.</item>
       <item/>
-      <item>READ TABLE g_tree_data-&gt;items INTO zz-le_item</item>
-      <item>WITH KEY</item>
-      <item>node_key = g_tree_data-&gt;node_key</item>
-      <item>item_name = &apos;TEXT&apos;.</item>
-      <item>CHECK sy-subrc = 0.</item>
+      <item>      READ TABLE g_tree_data-&gt;items INTO zz-le_item</item>
+      <item>        WITH KEY</item>
+      <item>          node_key = g_tree_data-&gt;node_key</item>
+      <item>          item_name = &apos;TEXT&apos;.</item>
+      <item>      CHECK sy-subrc = 0.</item>
       <item/>
-      <item>zz-html = |&lt;html&gt;&lt;body style=&quot;width:100%&quot;&gt;{ escape( val = zz-le_item-text format = cl_abap_format=&gt;e_html_text ) }|.</item>
+      <item>      zz-html = |&lt;html&gt;&lt;body style=&quot;width:100%&quot;&gt;{ escape( val = zz-le_item-text format = cl_abap_format=&gt;e_html_text ) }|.</item>
       <item/>
-      <item>zz-lv_relatkey  = zz-le_node-relatkey.</item>
-      <item>zz-lv_relatship_ant = zz-le_node-relatship.</item>
+      <item>      zz-lv_relatkey  = zz-le_node-relatkey.</item>
+      <item>      zz-lv_relatship_ant = zz-le_node-relatship.</item>
       <item/>
-      <item>WHILE zz-lv_relatkey IS NOT INITIAL.</item>
+      <item>      WHILE zz-lv_relatkey IS NOT INITIAL.</item>
       <item/>
-      <item>READ TABLE g_tree_data-&gt;nodes INTO zz-le_node WITH KEY node_key = zz-lv_relatkey .</item>
-      <item>CHECK sy-subrc = 0.</item>
+      <item>        READ TABLE g_tree_data-&gt;nodes INTO zz-le_node WITH KEY node_key = zz-lv_relatkey .</item>
+      <item>        CHECK sy-subrc = 0.</item>
       <item/>
-      <item>READ TABLE g_tree_data-&gt;items INTO zz-le_item WITH KEY node_key = zz-le_node-node_key item_name = &apos;TEXT&apos; .</item>
-      <item>CHECK sy-subrc = 0.</item>
+      <item>        READ TABLE g_tree_data-&gt;items INTO zz-le_item WITH KEY node_key = zz-le_node-node_key item_name = &apos;TEXT&apos; .</item>
+      <item>        CHECK sy-subrc = 0.</item>
       <item/>
-      <item>zz-lv_relatkey = zz-le_node-relatkey .</item>
+      <item>        zz-lv_relatkey = zz-le_node-relatkey .</item>
       <item/>
-      <item>IF zz-le_item-text IS NOT INITIAL AND zz-lv_relatship_ant = &apos;4&apos;.</item>
-      <item>zz-html = zz-le_item-text &amp;&amp; ` → ` &amp;&amp; zz-html.</item>
-      <item>ENDIF.</item>
-      <item>zz-lv_relatship_ant = zz-le_node-relatship.</item>
-      <item>ENDWHILE.</item>
+      <item>        IF zz-le_item-text IS NOT INITIAL AND zz-lv_relatship_ant = &apos;4&apos;.</item>
+      <item>          zz-html = zz-le_item-text &amp;&amp; ` → ` &amp;&amp; zz-html.</item>
+      <item>        ENDIF.</item>
+      <item>        zz-lv_relatship_ant = zz-le_node-relatship.</item>
+      <item>      ENDWHILE.</item>
       <item/>
-      <item>zz-html = zz-html &amp;&amp; |&lt;/body&gt;&lt;/html&gt;|.</item>
+      <item>      zz-html = zz-html &amp;&amp; |&lt;/body&gt;&lt;/html&gt;|.</item>
       <item/>
-      <item>cl_abap_browser=&gt;show_html(</item>
-      <item>EXPORTING</item>
-      <item>title       = &apos;Activity path&apos;</item>
-      <item>html_string = zz-html</item>
-      <item>check_html  = abap_false</item>
-      <item>size        = cl_abap_browser=&gt;small</item>
-      <item>format      = cl_abap_browser=&gt;portrait</item>
-      <item>).</item>
+      <item>      cl_abap_browser=&gt;show_html(</item>
+      <item>      EXPORTING</item>
+      <item>        title       = &apos;Activity path&apos;</item>
+      <item>        html_string = zz-html</item>
+      <item>        check_html  = abap_false</item>
+      <item>        size        = cl_abap_browser=&gt;small</item>
+      <item>        format      = cl_abap_browser=&gt;portrait</item>
+      <item>      ).</item>
       <item/>
-      <item>RETURN.</item>
+      <item>    RETURN.</item>
       <item/>
-      <item>ENDCASE.</item>
+      <item>  ENDCASE.</item>
      </SOURCE>
     </ENH_HOOK_IMPL>
    </ENHANCEMENTS>
-   <SPACES>
+   <SOTR>
     <item>
-     <FULL_NAME>\PR:SAPLSHI01\FO:HANDLE_MENU_REQUEST\SE:END\EI</FULL_NAME>
-     <SPACES>
-      <item>6</item>
-      <item>8</item>
-      <item>10</item>
-      <item>10</item>
-     </SPACES>
+     <HEADER>
+      <CONCEPT>000D3A46373D1ED9B0EA28B500C901B6</CONCEPT>
+      <CREA_LAN>E</CREA_LAN>
+      <TRALA_TYPE>1</TRALA_TYPE>
+      <OBJID_VEC>AAI=</OBJID_VEC>
+     </HEADER>
+     <ENTRIES>
+      <SOTR_TEXT>
+       <CONCEPT>000D3A46373D1ED9B0EA28B500C901B6</CONCEPT>
+       <LANGU>E</LANGU>
+       <LFD_NUM>0001</LFD_NUM>
+       <FLAG_CNTXT>X</FLAG_CNTXT>
+       <STATUS>R</STATUS>
+       <LENGTH>057</LENGTH>
+       <TEXT>SPRO context menu &quot;show activity path&quot;</TEXT>
+      </SOTR_TEXT>
+     </ENTRIES>
     </item>
-    <item>
-     <FULL_NAME>\PR:SAPLSHI01\FO:HANDLE_MENU_SELECT\SE:BEGIN\EI</FULL_NAME>
-     <SPACES>
-      <item>4</item>
-      <item>4</item>
-      <item>0</item>
-      <item>6</item>
-      <item>12</item>
-      <item>12</item>
-      <item>12</item>
-      <item>12</item>
-      <item>12</item>
-      <item>12</item>
-      <item>12</item>
-      <item>0</item>
-      <item>6</item>
-      <item>0</item>
-      <item>6</item>
-      <item>6</item>
-      <item>0</item>
-      <item>6</item>
-      <item>8</item>
-      <item>10</item>
-      <item>10</item>
-      <item>6</item>
-      <item>0</item>
-      <item>6</item>
-      <item>0</item>
-      <item>6</item>
-      <item>6</item>
-      <item>0</item>
-      <item>6</item>
-      <item>0</item>
-      <item>8</item>
-      <item>8</item>
-      <item>0</item>
-      <item>8</item>
-      <item>8</item>
-      <item>0</item>
-      <item>8</item>
-      <item>0</item>
-      <item>8</item>
-      <item>10</item>
-      <item>8</item>
-      <item>8</item>
-      <item>6</item>
-      <item>0</item>
-      <item>6</item>
-      <item>0</item>
-      <item>6</item>
-      <item>6</item>
-      <item>8</item>
-      <item>8</item>
-      <item>8</item>
-      <item>8</item>
-      <item>8</item>
-      <item>6</item>
-      <item>0</item>
-      <item>4</item>
-      <item>0</item>
-      <item>2</item>
-     </SPACES>
-    </item>
-   </SPACES>
+   </SOTR>
+   <SOTR_USE>
+    <SOTR_USE>
+     <PGMID>R3TR</PGMID>
+     <OBJECT>ENHO</OBJECT>
+     <OBJ_NAME>ZIMGPATH</OBJ_NAME>
+     <CONCEPT>000D3A46373D1ED9B0EA28B500C901B6</CONCEPT>
+     <LFD_NUM>0001</LFD_NUM>
+    </SOTR_USE>
+   </SOTR_USE>
   </asx:values>
  </asx:abap>
 </abapGit>
